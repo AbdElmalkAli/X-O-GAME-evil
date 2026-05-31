@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ox مستحيل</title>
    
-    <style>.game{
+    <style>
+.game{
     width: 50%;
     text-align: center;
-    font-family: system-ui;
+    /* font-family: system-ui; */
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: white;
     margin: auto;
     font-weight: 500;   
@@ -23,7 +25,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(90deg,#3d3865 0%, #3a3385 80% );
+    
+    background: linear-gradient(90deg,#292237 0%, #282f49 80%);
     height: 100vh;
     background-size: cover;
     background-position: center;
@@ -35,20 +38,22 @@
     padding: 5px 0;
     margin: 5px 0;
     text-transform: capitalize;
-    font-size: 20px;
+    font-size: 25px;
+    
 }
 span{
     color: #fa0;
     text-transform: capitalize;
-font-size: 25px;
+font-size: 30px;
 }
 .square{
-    width: 32.7%;
-    height: 175px;;
+    width: 32%;
+    height: 150px;;
     background: #f25;
     float: left;
-    margin: 2px;
-    font-size: 70px;
+    margin: 1px;
+    margin-bottom: 10px;
+    font-size: 50px;
       border: #000000 5% 5%;
       display: flex;
       align-items:center;
@@ -59,40 +64,43 @@ font-size: 25px;
 }
 
 .square:hover{
-    background: #000;
+    background: #181717;
     cursor: pointer;
+    box-shadow: 4px 4px 10px rgb(46, 41, 41);
 }
 .h1-game{
     text-align: center;
-    color: rgb(0, 0, 0);
-    background-color: aliceblue;
-     border: #000000 5% 5%;
+    color: whitesmoke;
+    background-color: transparent;
+     border: 1px solid whitesmoke;
+     padding-block: 8px;
 
 }
 .all-squars{
     display: flex;
     flex-wrap: wrap;
-   
+   justify-content: space-between;
 }
-@media (max-width: 600px){
 
+@media screen and (max-width:600px){
+    body{
+        background-color: yellow;
+    }
     .game{
-        width:95%;
-        padding:10px;
+        width: 90%;
     }
-
-    .h1-game{
-        font-size:22px;
-    }
-
-    .title{
-        font-size:18px;
-        padding:10px;
-    }
-
     .square{
-        height:100px;
-        font-size:60px;
+        width: 30%;
+        height: 80px;
+        font-size: 30px;
+    }
+    .title{
+        font-size: 18px;
+        font-weight: 400;
+    }
+    .h1-game{
+        font-size: 20px;
+        padding-block: 5px;
     }
 }
 </style>
@@ -101,7 +109,7 @@ font-size: 25px;
     <div class="GAME-2">
         
     <div class="game">
-    <h1 class="h1-game">Welcame Game</h1>
+    <h1 class="h1-game">Welcame To Abdelmalk Game</h1>
     <div class="title"><span> x o</span> GAME</div>
 
      <div class="all-squars">
@@ -206,9 +214,13 @@ function game(id)
     if (turn === 'x' && element.innerHTML == '')
     {
         element.innerHTML = 'X';
-        turn = 'o';
 
-        winnner();
+        if(checkWinner() !== null){
+            winnner();
+            return;
+        }
+
+        turn = 'o';
 
         setTimeout(aiMove, 300);
     }
@@ -311,6 +323,40 @@ function checkWinner() {
 
 
 winnner();
+function end(num1,num2,num3){
+
+    let winner = document.getElementById('item' + num1).innerHTML;
+
+    if(winner === 'X'){
+        title.innerHTML = 'You Win 🎉';
+    }else{
+        title.innerHTML = 'You Lose 😭';
+    }
+
+    document.getElementById('item' + num1).style.background ='#00ff04';
+    document.getElementById('item' + num2).style.background ='#00ff04';
+    document.getElementById('item' + num3).style.background ='#00ff04';
+
+    setInterval(function(){
+        title.innerHTML += '.';
+    },1000);
+
+    setTimeout(function(){
+        location.reload();
+    },3000);
+}
+if(squares.every((sq, i) => i === 0 || sq !== '')) {
+
+    title.innerHTML = 'Draw 🤝';
+
+    for(let i=1; i<10; i++){
+        document.getElementById('item'+i).style.background = '#ffaa00';
+    }
+
+    setTimeout(function(){
+        location.reload();
+    },3000);
+}
 </script>
 </body>
 </html>
