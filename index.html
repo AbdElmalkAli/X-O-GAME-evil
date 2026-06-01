@@ -130,7 +130,9 @@ font-size: 30px;
     </div>
     </div>
 
-    <script>let turn = 'x';
+    <script>
+        let gameOver = false;
+    let turn = 'x';
 var title = document.querySelector('.title')
 let squares = [];
 
@@ -227,27 +229,53 @@ function game(id)
     }
 }
 function aiMove() {
-    let bestScore = -Infinity;
-    let move;
 
-    for (let i = 1; i < 10; i++) {
-        let cell = document.getElementById('item' + i);
-
-        if (cell.innerHTML === '') {
-            cell.innerHTML = 'O';
-            let score = minimax(false);
-            cell.innerHTML = '';
-
-            if (score > bestScore) {
-                bestScore = score;
-                move = i;
+    // يفوز لو يقدر
+    for(let i=1;i<10;i++){
+        let cell=document.getElementById('item'+i);
+        if(cell.innerHTML===''){
+            cell.innerHTML='O';
+            if(checkWinner()==='O'){
+                turn='x';
+                winnner();
+                return;
             }
+            cell.innerHTML='';
         }
     }
 
-    document.getElementById('item' + move).innerHTML = 'O';
-    turn = 'x';
+    // يمنع فوز اللاعب
+    for(let i=1;i<10;i++){
+        let cell=document.getElementById('item'+i);
+        if(cell.innerHTML===''){
+            cell.innerHTML='X';
+            if(checkWinner()==='X'){
+                cell.innerHTML='O';
+                turn='x';
+                winnner();
+                return;
+            }
+            cell.innerHTML='';
+        }
+    }
 
+    // يأخذ المنتصف
+    if(document.getElementById('item5').innerHTML===''){
+        document.getElementById('item5').innerHTML='O';
+    }
+    else{
+        let moves=[];
+        for(let i=1;i<10;i++){
+            if(document.getElementById('item'+i).innerHTML===''){
+                moves.push(i);
+            }
+        }
+
+        let move=moves[Math.floor(Math.random()*moves.length)];
+        document.getElementById('item'+move).innerHTML='O';
+    }
+
+    turn='x';
     winnner();
 }
 function minimax(isMaximizing) {
@@ -358,6 +386,7 @@ if(squares.every((sq, i) => i === 0 || sq !== '')) {
         location.reload();
     },3000);
 }
+setTimeout(aiMove, 50);
 </script>
 </body>
 </html>
